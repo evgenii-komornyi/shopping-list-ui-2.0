@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    Button,
     Card,
     CardActionArea,
     CardActions,
@@ -10,9 +9,8 @@ import {
     Typography,
 } from '@mui/material';
 
-import { AddShoppingCartTwoTone } from '@mui/icons-material';
-
 import { useStyles } from './product-card.styles';
+import { AddToCartButton } from '../add-to-cart-button/add-to-cart-button.component';
 
 export const ProductCard = product => {
     const classes = useStyles();
@@ -30,7 +28,7 @@ export const ProductCard = product => {
                 <div className={classes.contentContainer}>
                     <CardMedia
                         component="img"
-                        alt={`${product.name}-${product.id}`}
+                        alt={`${product.title}-${product.id}`}
                         height="240"
                         image={`${process.env.REACT_APP_IMAGES_SERVER}/products/product-${product.id}/${product.files[0].fileName}`}
                     />
@@ -44,18 +42,7 @@ export const ProductCard = product => {
                     </CardContent>
                 </div>
                 <CardActions className={classes.cardActions}>
-                    <Button
-                        size="medium"
-                        variant="contained"
-                        startIcon={<AddShoppingCartTwoTone />}
-                        className={classes.addToCartButton}
-                        onClick={e => {
-                            console.log('add to cart', product);
-                            e.stopPropagation();
-                        }}
-                    >
-                        add to cart
-                    </Button>
+                    <AddToCartButton size="medium" product={product} />
                 </CardActions>
             </Card>
         </CardActionArea>

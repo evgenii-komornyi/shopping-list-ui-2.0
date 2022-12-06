@@ -25,7 +25,11 @@ export const LoadingProgress = ({ count, type }) => {
         }
     }, [navigate, isProductsLoaded, isCategoriesLoaded]);
 
-    return Array.from(new Array(count)).map((_, index) => (
-        <Skeletons type={type} key={index} />
-    ));
+    return count !== 0 ? (
+        Array.from(new Array(count)).map((_, index) => (
+            <Skeletons type={type} key={index} />
+        ))
+    ) : (
+        <Skeletons type={type} />
+    );
 };

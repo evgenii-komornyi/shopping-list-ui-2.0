@@ -8,6 +8,14 @@ export const getProducts = cancelationToken =>
         }
     );
 
+export const getProductById = (productId, cancelationToken) =>
+    axios.get(
+        `${process.env.REACT_APP_SERVER_URI}/${process.env.REACT_APP_PRODUCT_API}/${productId}`,
+        {
+            cancelToken: cancelationToken,
+        }
+    );
+
 export const upload = formData =>
     axios.post(
         `${process.env.REACT_APP_SERVER_URI}/${process.env.REACT_APP_UPLOAD_API}?category=product`,
