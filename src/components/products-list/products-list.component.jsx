@@ -1,28 +1,29 @@
-import { Grid, Typography } from '@mui/material';
 import React from 'react';
+import { Grid, Typography } from '@mui/material';
+
+import { ProductCard } from '../product-card/product-card.component';
+
 import { useProductsStore } from '../../app/productsStore';
+import { useStyles } from './products-list.styles';
+import { LoadingProgress } from '../loadingProgress/loadingProgress.component';
 
 export const ProductsList = () => {
-    const { products } = useProductsStore();
-    console.log(products);
+    const { products, isLoaded } = useProductsStore();
+    const classes = useStyles();
+
     return (
         <>
+            <Grid item xl={12}>
+                <Typography variant="h1" className={classes.title}>
+                    New products
+                </Typography>
+            </Grid>
             {products.map(product => (
                 <Grid key={product.id} item xl={4} sx={{ textAlign: 'center' }}>
-                    <Typography variant="h5">
-                        {product.brand} - {product.name}
-                    </Typography>
-                    <Typography variant="h6">{product.category}</Typography>
-                    <Typography variant="body1">
-                        {product.description}
-                    </Typography>
-                    <Typography variant="h3">{product.price}</Typography>
-
-                    <Typography variant="body1">
-                        {new Date(product.creationDate).toString()}
-                    </Typography>
+                    <ProductCard {...product} />
                 </Grid>
             ))}
+            {!isLoaded && <LoadingProgress count={3} type="productCard" />}
         </>
     );
 };

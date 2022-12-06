@@ -1,52 +1,43 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { useProductsStore } from './app/productsStore';
+import { useCategoriesStore } from './app/categoriesStore';
 
-import { Navigation } from './components/navigation/navigation.component';
-import { CommonRoutes } from './routes/commonRoutes';
+import { ThemeProvider, CssBaseline, Container } from '@mui/material';
 
-import { ThemeProvider, createTheme } from '@mui/material';
-import { CssBaseline } from '@mui/material';
-
-import { Container } from '@mui/system';
 import { Header } from './components/header/header.component';
+import { Navigation } from './components/navigation/navigation.component';
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'light',
-    },
-});
+import { MainRoutes } from './routes/mainRoutes';
+import { useCancelToken } from './hooks/useCancelToken';
+
+import { theme } from './helpers/theme.helper';
+import { CustomBreadcrumbs } from './components/custom-breadcrumbs/custom-breadcrumbs.component';
 
 const App = () => {
     const { fetchProducts } = useProductsStore();
+    const { fetchCategories } = useCategoriesStore();
+
+    const { newCancelToken, isCancel } = useCancelToken();
 
     useEffect(() => {
-        fetchProducts();
-    }, [fetchProducts]);
+        fetchProducts(newCancelToken(), isCancel);
+    }, [fetchProducts, isCancel, newCancelToken]);
 
-    const [open, setOpen] = useState(false);
-
-    const handleDrawerOpen = useCallback(() => {
-        setOpen(prev => (prev = true));
-    }, []);
-
-    const handleDrawerClose = useCallback(() => {
-        setOpen(prev => (prev = false));
-    }, []);
+    useEffect(() => {
+        fetchCategories(newCancelToken(), isCancel);
+    }, [fetchCategories, isCancel, newCancelToken]);
 
     return (
         <BrowserRouter>
-            <ThemeProvider theme={darkTheme}>
+            <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Header />
                 <Container maxWidth="lg">
-                    <Navigation
-                        open={open}
-                        handleDrawerOpen={handleDrawerOpen}
-                        handleDrawerClose={handleDrawerClose}
-                    />
-                    <CommonRoutes />
+                    <Navigation />
+                    <CustomBreadcrumbs />
+                    <MainRoutes />
                 </Container>
             </ThemeProvider>
         </BrowserRouter>

@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react';
 
-import { Box, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { useProductsStore } from '../../app/productsStore';
+import { useCategoriesStore } from '../../app/categoriesStore';
+import { Skeletons } from '../skeletons/skeletons.component';
 
 let timer;
 
-export const LoadingProgress = () => {
+export const LoadingProgress = ({ count, type }) => {
     const navigate = useNavigate();
-    const { status } = useProductsStore();
+    const isProductsLoaded = useProductsStore(state => state.isLoaded);
+    const isCategoriesLoaded = useCategoriesStore(state => state.isLoaded);
 
     useEffect(() => {
-        if (status === 0) {
+        if (!isProductsLoaded || !isCategoriesLoaded) {
             timer = setTimeout(() => {
                 navigate('/error');
             }, 10000);
@@ -21,22 +23,9 @@ export const LoadingProgress = () => {
                 clearTimeout(timer);
             };
         }
-    }, [navigate, status]);
+    }, [navigate, isProductsLoaded, isCategoriesLoaded]);
 
-    return (
-        <Box
-            sx={{
-                width: '100%',
-                height: '100%',
-                top: 0,
-                left: 0,
-                background: 'rgba(0,0,0,.5)',
-                position: 'absolute',
-                display: 'flex',
-                alignItems: 'center',
-            }}
-        >
-            <CircularProgress sx={{ mr: 'auto', ml: 'auto' }} />
-        </Box>
-    );
+    return Array.from(new Array(count)).map((_, index) => (
+        <Skeletons type={type} key={index} />
+    ));
 };

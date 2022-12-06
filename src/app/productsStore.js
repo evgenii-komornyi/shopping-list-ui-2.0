@@ -5,18 +5,19 @@ import { getProducts } from '../api/products';
 
 const productsStore = set => ({
     products: [],
-    status: 0,
+    isLoaded: false,
     validationErrors: null,
     dbErrors: null,
     exception: null,
 
-    fetchProducts: async () => {
+    fetchProducts: async (cancelationToken, isCancel) => {
         try {
-            const { data } = await getProducts();
+            const { data } = await getProducts(cancelationToken);
 
-            set({ products: data.products, status: data.status });
+            set({ products: data.products, isLoaded: true });
         } catch (error) {
-            set({ status: error.request.status });
+            set({ isLoaded: false });
+            if (isCancel(error)) return;
         }
     },
 });

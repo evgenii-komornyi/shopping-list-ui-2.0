@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Box,
     Toolbar,
@@ -11,20 +12,37 @@ import {
     Tooltip,
     MenuItem,
 } from '@mui/material';
-import { Menu as MenuIcon, ShoppingCart } from '@mui/icons-material';
+import { CategoryTwoTone, ShoppingCart } from '@mui/icons-material';
 
-import { AppBar, LinkContainer } from './navigation.styles';
+import { AppBar, LinkContainer, useStyles } from './navigation.styles';
 
 import { useAnchorEl } from '../../hooks/useAnchorEl';
+import { useCategoriesStore } from '../../app/categoriesStore';
+import { LoadingProgress } from '../loadingProgress/loadingProgress.component';
 
-const pages = ['Categories', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Logout'];
 
 export const Navigation = () => {
-    const [anchorElNav, openNav, handleOpenNavMenu, handleCloseNavMenu] =
-        useAnchorEl();
+    const navigate = useNavigate();
+
     const [anchorElUser, openUser, handleOpenUserMenu, handleCloseUserMenu] =
         useAnchorEl();
+
+    const [
+        anchorElCategories,
+        openCategories,
+        handleOpenCategories,
+        handleCloseCategories,
+    ] = useAnchorEl();
+
+    const classes = useStyles();
+
+    const { categories, isLoaded } = useCategoriesStore();
+
+    const handleClick = (e, category) => {
+        navigate(`/categories/${category}`);
+        handleCloseCategories();
+    };
 
     return (
         <AppBar position="static">
@@ -33,70 +51,49 @@ export const Navigation = () => {
                     <Box
                         sx={{
                             flexGrow: 1,
-                            display: { xs: 'flex', md: 'none' },
-                        }}
-                    >
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={openNav}
-                            onClose={handleCloseNavMenu}
-                            sx={{
-                                display: { xs: 'block', md: 'none' },
-                            }}
-                        >
-                            {pages.map(page => (
-                                <MenuItem
-                                    key={page}
-                                    onClick={handleCloseNavMenu}
-                                >
-                                    <LinkContainer to={`/${page}`}>
-                                        <Typography textAlign="center">
-                                            {page}
-                                        </Typography>
-                                    </LinkContainer>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
-                    <Box
-                        sx={{
-                            flexGrow: 1,
                             display: { xs: 'none', md: 'flex' },
                         }}
                     >
-                        {pages.map(page => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'black', display: 'block' }}
-                            >
-                                <LinkContainer to={`/${page}`}>
-                                    <Typography textAlign="center">
-                                        {page}
-                                    </Typography>
-                                </LinkContainer>
-                            </Button>
-                        ))}
+                        <Button
+                            id="basic-button"
+                            variant="text"
+                            aria-controls={
+                                openCategories ? 'basic-menu' : undefined
+                            }
+                            aria-haspopup="true"
+                            aria-expanded={openCategories ? 'true' : undefined}
+                            startIcon={
+                                <CategoryTwoTone className={classes.icon} />
+                            }
+                            onClick={handleOpenCategories}
+                        >
+                            <LinkContainer>
+                                <Typography>Categories</Typography>
+                            </LinkContainer>
+                        </Button>
+                        <Menu
+                            id="basic-menu"
+                            anchorEl={anchorElCategories}
+                            open={openCategories}
+                            onClose={handleCloseCategories}
+                            MenuListProps={{
+                                'aria-labelledby': 'basic-button',
+                            }}
+                        >
+                            {categories.map(category => (
+                                <MenuItem
+                                    key={category.id}
+                                    onClick={e =>
+                                        handleClick(e, category.category)
+                                    }
+                                >
+                                    {category.category}
+                                </MenuItem>
+                            ))}
+                            {!isLoaded && (
+                                <LoadingProgress count={3} type="categories" />
+                            )}
+                        </Menu>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>

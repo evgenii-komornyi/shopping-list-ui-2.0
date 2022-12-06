@@ -1,15 +1,6 @@
 import React from 'react';
 
-import {
-    Container,
-    Toolbar,
-    FormControl,
-    InputLabel,
-    Input,
-    InputAdornment,
-    IconButton,
-} from '@mui/material';
-import { Search } from '@mui/icons-material';
+import { Container, Toolbar } from '@mui/material';
 
 import { AppBar } from './header.styles';
 
