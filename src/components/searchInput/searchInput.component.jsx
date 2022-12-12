@@ -11,7 +11,7 @@ import { Search } from '@mui/icons-material';
 
 export const SearchInput = () => {
     return (
-        <FormControl sx={{ width: '100%', mr: 5, ml: 5 }} variant="standard">
+        <FormControl sx={{ width: '60%', mr: 5, ml: 5 }} variant="standard">
             <InputLabel htmlFor="standard-adornment-password">
                 Search
             </InputLabel>

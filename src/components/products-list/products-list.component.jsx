@@ -13,7 +13,7 @@ export const ProductsList = () => {
 
     return (
         <>
-            <Grid item xl={12}>
+            <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
                 <Typography variant="h1" className={classes.title}>
                     New products
                 </Typography>

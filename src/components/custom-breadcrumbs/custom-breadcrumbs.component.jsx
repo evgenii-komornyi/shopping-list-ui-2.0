@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Breadcrumbs, Container, Typography } from '@mui/material';
 
 import { HomeTwoTone } from '@mui/icons-material';
 
@@ -15,36 +15,38 @@ export const CustomBreadcrumbs = () => {
     const { getProductNameById } = useProductBreadcrumb();
 
     return (
-        <Breadcrumbs
-            aria-label="breadcrumb"
-            sx={{ mt: 2, alignItems: 'center' }}
-        >
-            <StyledBreadcrumb
-                component="a"
-                onClick={() => navigate('/')}
-                label="Home"
-                icon={<HomeTwoTone fontSize="small" />}
-            />
-            {pathnames.map((_, index) => {
-                const last = index === pathnames.length - 1;
-                const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-                const value = pathnames[pathnames.length - 1];
+        <Container maxWidth="lg">
+            <Breadcrumbs
+                aria-label="breadcrumb"
+                sx={{ mt: 2, alignItems: 'center' }}
+            >
+                <StyledBreadcrumb
+                    component="a"
+                    onClick={() => navigate('/')}
+                    label="Home"
+                    icon={<HomeTwoTone fontSize="small" />}
+                />
+                {pathnames.map((_, index) => {
+                    const last = index === pathnames.length - 1;
+                    const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+                    const value = pathnames[pathnames.length - 1];
 
-                return last ? (
-                    <Typography color="text.primary" key={to}>
-                        {!isNaN(parseInt(value))
-                            ? getProductNameById(value)
-                            : value}
-                    </Typography>
-                ) : (
-                    <StyledBreadcrumb
-                        component="a"
-                        onClick={() => navigate(to)}
-                        label={breadcrumbNameMap[to].title}
-                        key={to}
-                    />
-                );
-            })}
-        </Breadcrumbs>
+                    return last ? (
+                        <Typography color="text.primary" key={to}>
+                            {!isNaN(parseInt(value))
+                                ? getProductNameById(value)
+                                : value}
+                        </Typography>
+                    ) : (
+                        <StyledBreadcrumb
+                            component="a"
+                            onClick={() => navigate(to)}
+                            label={breadcrumbNameMap[to].title}
+                            key={to}
+                        />
+                    );
+                })}
+            </Breadcrumbs>
+        </Container>
     );
 };

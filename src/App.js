@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { useProductsStore } from './app/productsStore';
 import { useCategoriesStore } from './app/categoriesStore';
 
-import { ThemeProvider, CssBaseline, Container } from '@mui/material';
+import { ThemeProvider, CssBaseline, Container, Grid } from '@mui/material';
 
 import { Header } from './components/header/header.component';
 import { Navigation } from './components/navigation/navigation.component';
@@ -13,7 +13,8 @@ import { MainRoutes } from './routes/mainRoutes';
 import { useCancelToken } from './hooks/useCancelToken';
 
 import { theme } from './helpers/theme.helper';
-import { CustomBreadcrumbs } from './components/custom-breadcrumbs/custom-breadcrumbs.component';
+
+import './styles/App.css';
 
 const App = () => {
     const { fetchProducts } = useProductsStore();
@@ -34,10 +35,13 @@ const App = () => {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Header />
-                <Container maxWidth="lg">
-                    <Navigation />
-                    <CustomBreadcrumbs />
-                    <MainRoutes />
+                <Container maxWidth="xl">
+                    <Grid container columnSpacing={1} rowSpacing={1}>
+                        <Grid item xl={12}>
+                            <Navigation />
+                            <MainRoutes />
+                        </Grid>
+                    </Grid>
                 </Container>
             </ThemeProvider>
         </BrowserRouter>

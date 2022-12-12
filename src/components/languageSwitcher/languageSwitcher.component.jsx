@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, MenuItem, Chip } from '@mui/material';
+import { Menu, MenuItem, Button } from '@mui/material';
 import { LanguageTwoTone } from '@mui/icons-material';
 
 import { useAnchorEl } from '../../hooks/useAnchorEl';
@@ -17,11 +17,15 @@ export const LanguageSwitcher = () => {
 
     return (
         <>
-            <Chip
-                label={language}
-                icon={<LanguageTwoTone />}
+            <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<LanguageTwoTone />}
+                sx={{ mr: 2 }}
                 onClick={handleOpen}
-            />
+            >
+                {language}
+            </Button>
             <Menu
                 id="long-menu"
                 MenuListProps={{

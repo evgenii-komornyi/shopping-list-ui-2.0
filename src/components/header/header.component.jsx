@@ -1,20 +1,22 @@
 import React from 'react';
 
-import { Container, Toolbar } from '@mui/material';
+import { Container, Toolbar, Typography } from '@mui/material';
 
 import { AppBar } from './header.styles';
 
-import { LanguageSwitcher } from '../languageSwitcher/languageSwitcher.component';
 import { SearchInput } from '../searchInput/searchInput.component';
+import { CartButton } from '../cart-button/cart-button.component';
 
 export const Header = () => {
     return (
         <AppBar position="static">
-            <Container maxWidth="lg">
+            <Container maxWidth="xl">
                 <Toolbar disableGutters sx={{ minHeight: { md: 80 } }}>
-                    <LanguageSwitcher />
+                    <Typography variant="h3" sx={{ color: 'black' }}>
+                        LOGO
+                    </Typography>
                     <SearchInput />
-                    <LanguageSwitcher />
+                    <CartButton />
                 </Toolbar>
             </Container>
         </AppBar>
